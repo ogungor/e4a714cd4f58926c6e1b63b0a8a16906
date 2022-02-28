@@ -9,7 +9,6 @@ export default createStore({
     reservationInfos: [],
     stepNumber: 0,
   },
-  getters: {},
   mutations: {
     changeStepNumber(state, payload) {
       state.stepNumber = payload.stepNumber;
@@ -30,6 +29,7 @@ export default createStore({
       state.reservationInfos = payload.reservationInfos
     }
   },
+  getters: {},
   actions: {
     getHotels(context) {
       axios("https://5f6d939160cf97001641b049.mockapi.io/tkn/hotels")

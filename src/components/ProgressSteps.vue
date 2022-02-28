@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-steps-container px-5">
+  <div class="progress-steps-container">
     <div class="progress-steps d-flex justify-content-around px-2 py-4">
       <div
         class="d-flex flex-column align-items-center"

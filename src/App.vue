@@ -26,4 +26,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+body {
+  font-family: "Helvetica" !important;
+}
+.btn-primary {
+  background: darkcyan !important;
+  border: 1px solid lightblue;
+}
+</style>

@@ -1,120 +1,121 @@
 <template>
-  <ProgressSteps step="2" />
-  <div class="card-infos-container px-5 container-lg">
-    <div class="d-flex pt-4">
-      <div class="card-info d-flex flex-column col-7 pe-4">
-        <span class="fw-bold">Kredi Kartı Bilgileri</span>
-        <div class="d-flex flex-column pt-4">
-          <span>Kartın Üzerindeki İsim</span>
-          <input type="text" required v-model="cardName" />
+  <!--<ProgressSteps step="2" />-->
+  <div class="card-infos-container py-4 px-3 px-md-5">
+    <div class="col-12">
+        <span class="d-flex justify-content-center h3">Ödeme Bilgileri</span>
+      </div>
+    <div class="d-flex flex-column-reverse flex-md-row pt-4">
+      <div class="card-info d-flex flex-column col-12 col-md-7 px-2 mt-3 mt-md-0">
+        <div>
+          <vue-paycard :value-fields="valueFields" :isCardNumberMasked="false" />
         </div>
-        <div class="d-flex flex-column">
-          <span>Kartın Numarası</span>
-          <input type="text" required v-model="cardNumber" maxlength="16" />
-        </div>
+        <div class="mt-5">
+          <span class="fw-bold">Kredi Kartı Bilgileri</span>
+          <div class="d-flex flex-column pt-4">
+            <span>Kartın Üzerindeki İsim</span>
+            <input type="text" required v-model="valueFields.cardName" />
+          </div>
+          <div class="d-flex flex-column">
+            <span>Kartın Numarası</span>
+            <input type="text" minlength="19" required v-model="valueFields.cardNumber" maxlength="19" />
+          </div>
 
-        <!-- EXPIRE Date -->
-        <div class="d-flex justify-content-between">
-          <div class="expire-month pt-4">
-            <span>Kartın Son Kullanma Tarihini</span>
-            <div class="d-flex gap-2">
-              <select
-                class="form-select"
-                v-model="expireDateMonth"
-                aria-label="Month"
-                required
-              >
-                <option
-                  v-for="month in expireMonths"
-                  :value="month.value"
-                  :key="month.id"
+          <!-- EXPIRE Date -->
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="expire-month pt-4">
+              <span>Kartın Son Kullanma Tarihi</span>
+              <div class="d-flex gap-2">
+                <select
+                  class="form-select"
+                  v-model="valueFields.cardMonth"
+                  aria-label="Month"
+                  required
                 >
-                  {{ month.value }}
-                </option>
-              </select>
-              <select
-                class="form-select"
-                v-model="expireDateYear"
-                aria-label="Year"
-                required
-              >
-                <option
-                  v-for="year in expireYears"
-                  :value="year.value"
-                  :key="year.id"
+                  <option
+                    v-for="month in expireMonths"
+                    :value="month.value"
+                    :key="month.id"
+                  >
+                    {{ month.value }}
+                  </option>
+                </select>
+                <select
+                  class="form-select"
+                  v-model="valueFields.cardYear"
+                  aria-label="Year"
+                  required
                 >
-                  {{ year.value }}
-                </option>
-              </select>
+                  <option
+                    v-for="year in expireYears"
+                    :value="year.value"
+                    :key="year.id"
+                  >
+                    {{ year.value }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="d-flex flex-column pt-4">
+              <span>CVV</span>
+              <input type="number" maxlength="3" required v-model="valueFields.cardCvv" />
             </div>
           </div>
-          <div class="d-flex flex-column pt-4">
-            <span>CVV</span>
-            <input type="text" maxlength="3" required v-model="cvv" />
-          </div>
-        </div>
-        <div v-if="hasError" class="text-danger mt-2">
-          <p>Bilgilerinizi kontrol ediniz.</p>
-          <p>'Kart İsmi' kısmına lütfen türkçe karakter girmeyiniz.</p>
-          <p>'Kart Numarası' kısmına lütfen sadece rakam giriniz.</p>
         </div>
       </div>
-      <div class="summary-info d-flex flex-column col-5 p-4">
+      <div class="summary-info d-flex flex-column col-12 col-md-5 p-4">
         <div>
           <span class="fw-bolder fs-4">{{ hotelInfos.hotelName }}</span>
           <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
             <div
-              class="d-flex flex-column col-5 bg-light rounded-3 align-items-center px-2 py-3"
+              class="d-flex flex-column col-5 bg-white rounded-3 align-items-center px-2 py-3 box-border"
             >
               <span class="fw-bold">Giriş Tarihi</span>
               <span>{{ formatDate(hotelInfos.startDate) }}</span>
             </div>
             <div
-              class="d-flex flex-column col-5 bg-light rounded-3 align-items-center px-2 py-3"
+              class="d-flex flex-column col-5 bg-white rounded-3 align-items-center px-2 py-3 box-border"
             >
               <span class="fw-bold">Çıkış Tarihi</span>
               <span>{{ formatDate(hotelInfos.endDate) }}</span>
             </div>
             <div
-              class="d-flex flex-column col-5 bg-light rounded-3 align-items-center px-2 py-3"
+              class="d-flex flex-column col-5 bg-white rounded-3 align-items-center px-2 py-3 box-border"
             >
               <span class="fw-bold">Yetişkin</span>
               <span>{{ hotelInfos.adultSize }}</span>
             </div>
             <div
-              class="d-flex flex-column col-5 bg-light rounded-3 align-items-center px-2 py-3"
+              class="d-flex flex-column col-5 bg-white rounded-3 align-items-center px-2 py-3 box-border"
             >
               <span class="fw-bold">Çocuk</span>
               <span>{{ hotelInfos.childSize || "0" }}</span>
             </div>
             <div
-              class="d-flex flex-column col-5 bg-light rounded-3 align-items-center px-2 py-3"
+              class="d-flex flex-column col-5 bg-white rounded-3 align-items-center px-2 py-3 box-border"
             >
               <span class="fw-bold">Oda Tipi</span>
               <span>{{ setRoomTitle(roomInfos.roomType) }}</span>
             </div>
             <div
-              class="d-flex flex-column col-5 bg-light rounded-3 align-items-center px-2 py-3"
+              class="d-flex flex-column col-5 bg-white rounded-3 align-items-center px-2 py-3 box-border"
             >
               <span class="fw-bold">Manzara</span>
               <span>{{ setScenicTitle(roomInfos.scenicType) }}</span>
             </div>
           </div>
           <div
-            class="d-flex justify-content-around bg-light mt-4 py-3 px-4 rounded-3"
+            class="d-flex justify-content-between mt-5 rounded-3"
           >
-            <input type="text" v-model="couponCode" placeholder="Kupon Kodu" />
+            <input class="coupon-code-input" type="text" v-model="couponCode" placeholder="Kupon Kodu" />
             <button class="btn btn-primary" @click="useCoupon(couponCode)">
               Kodu Kullan
             </button>
           </div>
-          <p v-if="couponUsed && isCouponAvailable">Kupon kullanıldı.</p>
-          <p v-if="couponUsed && !isCouponAvailable">Kupon kullanım dışı.</p>
         </div>
-        <div class="d-flex flex-column bg-light mt-4 px-4 py-3 rounded-top">
+        <div class="d-flex flex-column bg-white mt-4 px-4 py-3 rounded-top">
           <div class="d-flex justify-content-between">
             <span class="fw-bold">Oda Fiyatı</span>
-            <span>{{ roomInfos.roomPrice }} TL </span>
+            <span>{{ formatPrice(roomInfos.roomPrice) }} TL </span>
           </div>
           <div class="d-flex justify-content-between">
             <span class="fw-bold">Fiyat Etki Oranı</span>
@@ -124,7 +125,7 @@
             <span class="fw-bold"
               >Konaklama ({{ roomInfos.numberOfDays }} Gün)</span
             >
-            <span>{{ roomInfos.roomPrice * roomInfos.numberOfDays }} TL</span>
+            <span>{{ formatPrice(roomInfos.roomPrice * roomInfos.numberOfDays) }} TL</span>
           </div>
           <div
             class="d-flex justify-content-between"
@@ -136,10 +137,10 @@
         </div>
         <hr class="my-0" />
         <div
-          class="d-flex flex-column align-items-center bg-light px-4 py-3 rounded-bottom"
+          class="d-flex flex-column align-items-center bg-white px-4 py-3 rounded-bottom"
         >
           <span class="fw-bold fs-6">TOPLAM TUTAR</span>
-          <span class="fw-bold fs-3">{{ totalPrice }}</span>
+          <span class="fw-bold fs-3">{{ formatPrice(totalPrice) }}</span>
         </div>
       </div>
     </div>
@@ -152,33 +153,39 @@
       </button>
     </div>
   </div>
+  <vue-basic-alert :duration="300" :closeIn="3000" ref="couponUsed" />
+  <vue-basic-alert :duration="300" :closeIn="3000" ref="couponNotUsed" />
+  <vue-basic-alert :duration="300" :closeIn="3000" ref="wrongCardInfos" />
 </template>
 
 <script>
-import ProgressSteps from "./ProgressSteps.vue";
 import axios from "axios";
 import moment from "moment";
+import { VuePaycard } from "vue-paycard";
+import VueBasicAlert from "vue-basic-alert";
 
 export default {
   name: "Checkout",
   components: {
-    ProgressSteps,
+    VuePaycard,
+    VueBasicAlert
   },
   data() {
     return {
+       valueFields: {
+        cardName: "",
+        cardNumber: "",
+        cardMonth: "",
+        cardYear: "",
+        cardCvv: "",
+      },
       couponCode: null,
-      cardNumber: null,
-      cardName: null,
-      expireDateMonth: null,
-      expireDateYear: null,
-      cvv: null,
       hotelInfos: JSON.parse(localStorage.getItem("hotelInfos")),
       roomInfos: JSON.parse(localStorage.getItem("roomInfos")),
       couponUsed: false,
       isCouponAvailable: null,
       usedCouponCodeName: null,
       discountAmount: null,
-      hasError: false,
       expireMonths: [
         { id: 1, value: "01" },
         { id: 2, value: "02" },
@@ -228,6 +235,13 @@ export default {
         .then((response) => response.data)
         .then((data) => {
           this.couponUsed = true;
+          this.$refs.couponNotUsed.showAlert(
+              "success", 
+              "",
+              "Kupon kullanıldı !",
+              "Success 200",
+              "This is the information of something you may know Success."
+            );
           if (data.length) {
             data.forEach((item) => {
               const today = new Date();
@@ -240,20 +254,27 @@ export default {
               }
             });
           } else {
-            this.isCouponAvailable = false;
+            this.$refs.couponNotUsed.showAlert(
+              "error", 
+              "",
+              "Kupon hatalı girildi !",
+              "Error",
+              "This is the information of something you may know Success."
+            );
           }
         });
     },
     makeReservation() {
       if (
-        this.cardName &&
-        this.checkOnlyLetter(this.cardName) &&
-        this.cardNumber &&
-        this.checkOnlyNumber(this.cardNumber) &&
-        this.expireDateMonth &&
-        this.expireDateYear &&
-        this.cvv &&
-        this.checkOnlyNumber(this.cvv)
+        this.valueFields.cardName &&
+        this.checkOnlyLetter(this.valueFields.cardName) &&
+        this.valueFields.cardNumber &&
+        this.checkOnlyNumber(this.valueFields.cardNumber) &&
+        this.valueFields.cardMonth &&
+        this.valueFields.cardYear &&
+        this.valueFields.cardCvv &&
+        this.valueFields.cardCvv.toString().length === 3 &&
+        this.checkOnlyNumber(this.valueFields.cardCvv)
       ) {
         const reservationInfos = {
           hotel_id: this.hotelInfos.hotelId,
@@ -265,11 +286,11 @@ export default {
           room_scenic: this.roomInfos.scenicType,
           price: this.totalPrice,
           coupon_code: this.couponCode,
-          card_name: this.cardName,
-          card_number: this.cardNumber,
-          card_date_month: this.expireDateMonth,
-          card_date_year: this.expireDateYear,
-          card_cvv: this.cvv,
+          card_name: this.valueFields.cardName,
+          card_number: this.valueFields.cardNumber,
+          card_date_month: this.valueFields.cardMonth,
+          card_date_year: this.valueFields.cardYear,
+          card_cardCvv: this.valueFields.cardCvv,
         };
         axios
           .post(
@@ -284,9 +305,14 @@ export default {
               this.changeStep(3);
             }
           });
-        this.hasError = false;
       } else {
-        this.hasError = true;
+        this.$refs.wrongCardInfos.showAlert(
+          "error", 
+          "",
+          "Kart bilgilerinizi eksiksiz ve doğru doldurunuz !",
+           "Success 200",
+          "This is the information of something you may know Success."
+        );
       }
     },
     changeStep(step) {
@@ -296,7 +322,7 @@ export default {
       return /^\d+$/.test(val);
     },
     checkOnlyLetter(val) {
-      return /^[a-zA-Z]+$/.test(val.replace(" ", ""));
+      return /^[a-zA-ZğüşöçİĞÜŞÖÇ]+$/.test(val.replace(" ", ""));
     },
     formatDate(value) {
       return moment(value).format("DD.MM.YYYY");
@@ -311,6 +337,12 @@ export default {
         ? "Havuz Manzaralı"
         : "Deniz Manzaralı";
     },
+    formatPrice(price) {
+      return (price).toLocaleString('tr-TR', {
+        style: 'currency',
+        currency: 'TRY',
+      })
+    },
     goBack() {
       this.$store.commit("changeStepNumber", { stepNumber: 1 });
     },
@@ -319,6 +351,12 @@ export default {
 </script>
 <style>
 .summary-info {
-  background-color: #f0eeee;
+  background-color: #f6f9fd;
+}
+.box-border, .coupon-code-input {
+    border: 1px solid lightblue;
+}
+.coupon-code-input {
+  padding-left: 10px;
 }
 </style>
