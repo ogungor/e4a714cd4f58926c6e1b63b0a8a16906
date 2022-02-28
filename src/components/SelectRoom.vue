@@ -1,5 +1,4 @@
 <template>
-  <!--<ProgressSteps step="1" />-->
   <div class="select-room-container">
     <div class="hotel-info-area py-4 px-5 d-flex flex-column">
       <div class="d-flex flex-column flex-md-row gap-4 justify-content-between">
@@ -205,7 +204,6 @@
 </template>
 
 <script>
-//import ProgressSteps from "./ProgressSteps.vue";
 import VueBasicAlert from "vue-basic-alert";
 import moment from "moment";
 import { mapState } from "vuex";
@@ -213,7 +211,6 @@ import { mapState } from "vuex";
 export default {
   name: "SelectRoom",
   components: {
-    //ProgressSteps,
     VueBasicAlert,
   },
   data() {

@@ -1,5 +1,4 @@
 <template>
-  <!--<ProgressSteps step="2" />-->
   <div class="card-infos-container py-4 px-3 px-md-5">
     <div class="col-12">
         <span class="d-flex justify-content-center h3">Ödeme Bilgileri</span>

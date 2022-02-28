@@ -1,6 +1,5 @@
 <template>
   <div class="select-date-container">
-    <!--<ProgressSteps step="0"/>-->
     <div
       class="
         d-flex
@@ -116,14 +115,12 @@
 </template>
 
 <script>
-//import ProgressSteps from "./ProgressSteps.vue";
 import Datepicker from "vue3-date-time-picker";
 import { mapState } from "vuex";
 
 export default {
   name: "SelectHotel",
   components: {
-    //ProgressSteps,
     Datepicker,
   },
   data() {
